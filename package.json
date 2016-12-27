@@ -1,0 +1,25 @@
+{
+  "name": "node-modules-manager",
+  "version": "1.0.0",
+  "description": "A simple module loader and manager to optimize lazy loading.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ppajer/node-modules-manager.git"
+  },
+  "keywords": [
+    "module",
+    "loader",
+    "manager",
+    "lazy"
+  ],
+  "author": "ppajer",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/ppajer/node-modules-manager/issues"
+  },
+  "homepage": "https://github.com/ppajer/node-modules-manager#readme"
+}

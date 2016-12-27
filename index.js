@@ -5,7 +5,7 @@ function ModuleLoader(basePath, initialModules) {
 		this.basePath 		= basePath || '';
 		this.modulesLoaded 	= {};
 
-		if (initialModules || initialModules.length) {
+		if (initialModules && initialModules.length) {
 
 			initialModules.forEach(this.loadModule.bind(this));
 		};
@@ -58,4 +58,8 @@ function ModuleLoader(basePath, initialModules) {
 
 		return (typeof this.modulesLoaded[module] !== "undefined");
 	}
+
+	this.init(basePath, initialModules);
 }
+
+module.exports = ModuleLoader;
