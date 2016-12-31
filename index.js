@@ -43,7 +43,7 @@ function ModuleLoader(baseDir, initialModules) {
 		if (typeof module === "object") {
 
 			moduleName = module.name;
-			modulePath = require('path').resolve(this.baseDir, module.path);
+			modulePath = this.isModulePath(module.path) ? require('path').resolve(this.baseDir, module.path) : module.path;
 		
 		} else {
 
