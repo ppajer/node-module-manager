@@ -18,3 +18,7 @@ Manager.loadModule('fs');
 Manager.loadModule('../path/to/module.js');
 ``` 
 
+### Load modules with an alias
+
+To access your modules by a name different from the module's own name, you can pass an object to the `loadModule` or `getModule` methods. The keys `name` and `path` must be specified on all objects passed this way, and can later be accessed by passing the value of `name` to `getModule()`.
+
