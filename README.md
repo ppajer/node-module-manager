@@ -9,6 +9,7 @@ The module loader requires a base path to be able to handle relative module path
 
 ```
 const Manager = new require('node-modules-manager')('full/path/to/rootdir');
+```
 
 ### Load locally installed modules
 
