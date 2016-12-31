@@ -13,7 +13,17 @@ function ModuleLoader(baseDir, initialModules) {
 
 	this.getModule = function(module) {
 
-		var moduleName = this.isModulePath(module) ? this.getModuleNameFromPath(module) : module;
+		var moduleName;
+
+		if (typeof module === "object") {
+
+			moduleName = module.name;
+
+		} else {
+
+			moduleName = this.isModulePath(module) ? this.getModuleNameFromPath(module) : module;
+		
+		} 
 		
 		if (this.isModuleLoaded(moduleName)) {
 
