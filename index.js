@@ -33,12 +33,12 @@ function ModuleLoader(baseDir, initialModules) {
 		if (typeof module === "object") {
 
 			moduleName = module.name;
-			modulePath = require('path').resolve(baseDir, module.path);
+			modulePath = require('path').resolve(this.baseDir, module.path);
 		
 		} else {
 
-			moduleName = this.isModulePath(module) ? this.getModuleNameFromPath(module) 		: module;
-			modulePath = this.isModulePath(module) ? require('path').resolve(baseDir, module) 	: module;
+			moduleName = this.isModulePath(module) ? this.getModuleNameFromPath(module) 			: module;
+			modulePath = this.isModulePath(module) ? require('path').resolve(this.baseDir, module) 	: module;
 		}
 
 		this.modulesLoaded[moduleName] = require(modulePath);
