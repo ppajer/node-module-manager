@@ -67,4 +67,6 @@ function ModuleLoader(baseDir, initialModules) {
 	this.init(baseDir, initialModules);
 }
 
-module.exports = ModuleLoader;
+module.exports.createManager = function(baseDir, initialModules) {
+	return new ModuleLoader(baseDir, initialModules);
+}
