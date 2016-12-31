@@ -46,6 +46,19 @@ function ModuleLoader(baseDir, initialModules) {
 		return this.modulesLoaded[moduleName];
 	}
 
+	this.unloadModule = function(module) {
+
+		var moduleName = this.isModulePath(module) ? this.getModuleNameFromPath(module) : module;
+
+		if (this.isModuleLoaded(moduleName)) {
+
+			delete this.modulesLoaded[moduleName];
+
+		}
+
+		return null;
+	}
+
 	this.getModuleNameFromPath = function(modulePath) {
 
 		var pathParts 	= modulePath.split('/'),

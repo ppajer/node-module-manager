@@ -8,15 +8,17 @@ A lightweight module loader and manager to keep your modules organised and help 
 The module loader requires a base path to be able to handle relative module paths. You can pass the base path as the first parameter of the constructor.
 
 ```
-const Manager = new require('node-modules-manager')('full/path/to/rootdir');
+const Manager = require('node-modules-manager').createManager('full/path/to/rootdir');
 ```
+
+## Loading modules
 
 ### Load locally installed modules
 
 To load a module installed globally or as dependency, you can simply pass the module's name to the [constructor](#initialize-with-preloaded-modules) `loadModule()` method to load the module for later use, or the `getModule()` method to use the module right away. You can also [pass an object to customize the name you access your modules by](#load-modules-with-an-alias).
 
 ```
-const Manager = new require('node-modules-manager')('rootdir');
+const Manager = require('node-modules-manager').createManager('rootdir');
 
 // To load a module for later use. Returns true upon success or false if the module wasn't found.
 Manager.loadModule('installedModule');
@@ -30,7 +32,7 @@ Manager.getModule('fs').readDirSync(/* ... */);
 To load a module by path, you can pass the module's path to the [constructor](#initialize-with-preloaded-modules), `loadModule()` or `getModule()`. The module will then be accessible through either its full path or the filename of the module (the part of the path after the last `/`). You can also [pass an object to customize the name you access your modules by](#load-modules-with-an-alias).
 
 ```
-const Manager = new require('node-modules-manager')('rootdir');
+const Manager = require('node-modules-manager').createManager('rootdir');
 
 // Load module by passing full path
 Manager.loadModule('path/to/module.js');
@@ -47,7 +49,7 @@ Manager.getModule('module.js');
 Sometimes there are some modules you simply cannot delay loading. To avoid making unnecessary calls to `loadModule()`, you can pass an array of module names, paths, or [objects](#load-modules-with-an-alias) to the constructor and the module loader will load them right away.
 
 ```
-const Manager = new require('node-modules-manager')(
+const Manager = require('node-modules-manager').createManager(
 														'rootdir',
 														[
 															'fs', 
@@ -64,7 +66,7 @@ To access your modules by a name different from the module's own name, you can p
 
 ```
 // Initialize and pass aliased object as module to the constructor
-const Manager = new require('node-modules-manager')(
+const Manager = require('node-modules-manager').createManager(
 														'rootdir',
 														[
 															{
@@ -84,3 +86,20 @@ Manager.getModule({name: 'exampleModule', path:'../path/to/example-module.min.js
 Manager.getModule('exampleModule'); //will return the contents of 'rootdir/path/to/example-module.min.js'
 ```
 
+## Unloading modules
+
+When you're done using some module functionality, it is sometimes preferable to drop the module from memory instead of bloating your Manager instance if you don't plan on reusing it soon. You can unload the contents of a module at any time by calling the `unloadModule()` method with either a module name, path or alias. The method returns `null` on success so that its return value can be used to reset your references to the module.
+
+```
+// Load the module
+const Manager = require('node-modules-manager').createManager('rootdir');
+let someModule = Manager.loadModule('someModule');
+
+// Use it while it's hot
+someModule.doSomething();
+
+// Drop from memory to speed things up when you're done
+someModule = Manager.unloadModule('someModule');
+
+console.log(someModule); // null
+```
