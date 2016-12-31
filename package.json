@@ -1,6 +1,6 @@
 {
   "name": "node-modules-manager",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "A simple module loader and manager to optimize lazy loading.",
   "main": "index.js",
   "scripts": {
