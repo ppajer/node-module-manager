@@ -1,7 +1,8 @@
-function ModuleLoader(initialModules) {
+function ModuleLoader(baseDir, initialModules) {
 
-	this.init = function(initialModules) {
+	this.init = function(baseDir, initialModules) {
 
+		this.baseDir 		= baseDir || '';
 		this.modulesLoaded 	= {};
 
 		if (initialModules && initialModules.length) {
@@ -32,12 +33,12 @@ function ModuleLoader(initialModules) {
 		if (typeof module === "object") {
 
 			moduleName = module.name;
-			modulePath = require('path').resolve(__dirname, module.path);
+			modulePath = require('path').resolve(baseDir, module.path);
 		
 		} else {
 
-			moduleName = this.isModulePath(module) ? this.getModuleNameFromPath(module) : module;
-			modulePath = require('path').resolve(__dirname, module);
+			moduleName = this.isModulePath(module) ? this.getModuleNameFromPath(module) 		: module;
+			modulePath = this.isModulePath(module) ? require('path').resolve(baseDir, module) 	: module;
 		}
 
 		this.modulesLoaded[moduleName] = require(modulePath);
@@ -63,7 +64,7 @@ function ModuleLoader(initialModules) {
 		return (typeof this.modulesLoaded[module] !== "undefined");
 	}
 
-	this.init(initialModules);
+	this.init(baseDir, initialModules);
 }
 
 module.exports = ModuleLoader;
