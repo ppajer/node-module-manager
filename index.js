@@ -13,17 +13,7 @@ function ModuleLoader(baseDir, initialModules) {
 
 	this.getModule = function(module) {
 
-		var moduleName;
-
-		if (typeof module === "object") {
-
-			moduleName = module.name;
-
-		} else {
-
-			moduleName = this.isModulePath(module) ? this.getModuleNameFromPath(module) : module;
-		
-		} 
+ 		var moduleName = this.getModuleName(module);
 		
 		if (this.isModuleLoaded(moduleName)) {
 
@@ -35,19 +25,33 @@ function ModuleLoader(baseDir, initialModules) {
 		}	
 	}
 
+	this.getModuleOnce = function(module, callback) {
+
+		var moduleName = this.getModuleName(module);
+
+		if (this.isModuleLoaded(module)) {
+
+			console.warn('Module '+module+' is aleady loaded. Call ModuleLoader.unloadModule to avoid keeping it in memory.');
+			callback(this.modulesLoaded[moduleName]);
+
+		} else {
+
+			callback(this.loadModule(module));
+			this.unloadModule(module);
+		}
+	}
+
 	this.loadModule = function(module) {
 
-		var moduleName,
+		var moduleName = this.getModuleName(module),
 			modulePath;
 
 		if (typeof module === "object") {
 
-			moduleName = module.name;
 			modulePath = this.isModulePath(module.path) ? require('path').resolve(this.baseDir, module.path) : module.path;
 		
 		} else {
 
-			moduleName = this.isModulePath(module) ? this.getModuleNameFromPath(module) 			: module;
 			modulePath = this.isModulePath(module) ? require('path').resolve(this.baseDir, module) 	: module;
 		}
 
@@ -58,7 +62,7 @@ function ModuleLoader(baseDir, initialModules) {
 
 	this.unloadModule = function(module) {
 
-		var moduleName = this.isModulePath(module) ? this.getModuleNameFromPath(module) : module;
+		var moduleName = this.getModuleName(module);
 
 		if (this.isModuleLoaded(moduleName)) {
 
@@ -67,6 +71,19 @@ function ModuleLoader(baseDir, initialModules) {
 		}
 
 		return null;
+	}
+
+	this.getModuleName = function(module) {
+
+		if (typeof module === "object") {
+
+			return module.name;
+
+		} else {
+
+			return this.isModulePath(module) ? this.getModuleNameFromPath(module) : module;
+		
+		}
 	}
 
 	this.getModuleNameFromPath = function(modulePath) {

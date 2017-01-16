@@ -86,6 +86,21 @@ Manager.getModule({name: 'exampleModule', path:'../path/to/example-module.min.js
 Manager.getModule('exampleModule'); //will return the contents of 'rootdir/path/to/example-module.min.js'
 ```
 
+### Loading a module once
+
+Do you only need to call a module once and then remove all references to it to keep it from hogging memory? This project has you covered! You can simply pass a callback along with the name of the module it requires to ˙getModuleOnce()` and be rid of all traces outside of your callback function. *This method will warn you if you already preloaded the required module to highlight possible optimization issues.*
+
+```
+const Manager = require('node-modules-manager').createManager('rootdir');
+
+Manager.getModuleOnce('exampleModule', function(module) {
+	console.log(module); //exampleModule
+});
+
+// the module never lives outside the Manager
+
+``` 
+
 ## Unloading modules
 
 When you're done using some module functionality, it is sometimes preferable to drop the module from memory instead of bloating your Manager instance if you don't plan on reusing it soon. You can unload the contents of a module at any time by calling the `unloadModule()` method with either a module name, path or alias. The method returns `null` on success so that its return value can be used to reset your references to the module.
