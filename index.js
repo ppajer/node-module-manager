@@ -25,14 +25,20 @@ function ModuleLoader(baseDir, initialModules) {
 		}	
 	}
 
-	this.getModuleOnce = function(module, callback) {
+	this.getModuleOnce = function(module, callback, forceUnload) {
 
-		var moduleName = this.getModuleName(module);
+		var moduleName 	= this.getModuleName(module),
+			forceUnload	= forceUnload || false;
 
 		if (this.isModuleLoaded(module)) {
 
-			console.warn('Module '+module+' is aleady loaded. Call ModuleLoader.unloadModule to avoid keeping it in memory.');
+			console.warn('Module '+module+' is aleady loaded. Call ModuleLoader.unloadModule or set the `forceUnload` parameter to `true` to avoid keeping it in memory.');
 			callback(this.modulesLoaded[moduleName]);
+
+			if (forceUnload) {
+
+				this.unloadModule(module);
+			};
 
 		} else {
 
